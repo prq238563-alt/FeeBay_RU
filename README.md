@@ -114,17 +114,6 @@ FeeBay_RU/
 
 ---
 
-## Публикация на GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial release: Russian localization for FeeBay Simulator"
-git branch -M main
-git remote add origin https://github.com/prq238563-alt/FeeBay_RU.git
-git push -u origin main
-```
-
 Релиз: прикрепить `release/FeeBay_RU_Installer.exe` к GitHub Release с номером версии игры из `translations/strings_ru.json` → `meta.game_version`.
 
 ---
