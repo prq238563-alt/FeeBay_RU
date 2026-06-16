@@ -1,0 +1,33 @@
+# Build artifacts
+tools/build/
+tools/dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Patched game bundle (build locally; attach to GitHub Releases)
+release/app.asar
+release/app.asar.unpacked/
+release/*.exe
+
+# Installer settings (local path to game)
+feebay_ru_installer.json
+
+# Temp / local dev
+patch-work/
+feebay-asar-*/
+feebay-ru-*/
+*.log
+tools/_*
+tools/_audit_en.txt
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp

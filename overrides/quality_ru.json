@@ -1,0 +1,50 @@
+{
+  "translations": {
+    "Value": "Цена",
+    "Margin": "Профит",
+    "Paid": "Куплено",
+    "Est. value": "Оц. цена",
+    "Centering": "Центр",
+
+    "All listings": "Все лоты",
+
+    "Auto-Sniper": "Авто-снайпер",
+    "Set a max bid and the goblin snipes for you at the buzzer.": "Задай максимальную ставку — гоблин перехватит лот в последнюю секунду.",
+    "Convention Insider Pass": "Пропуск инсайдера конвента",
+    "See conventions 60s before they go public. +5% boost while attending.": "Видишь конвенты на 60 сек. раньше остальных. +5% к бонусу на площадке.",
+    "Hire: Vault Keeper": "Наём: хранитель сейфа",
+    "Vault-held cards become immune to market noise. Hold the chase pieces stable.": "Карты в сейфе не реагируют на рыночный шум. Chase-карты лежат спокойно.",
+
+    "Marketplace": "Рынок",
+    "Browse parody platforms. Each refresh seeds 12 listings, some great, most fair, a few traps.": "Пародийные площадки. Каждое обновление — 12 лотов: жемчужины, нормальные цены и ловушки.",
+    "Inspect a listing to see seller flavor and (if you own Magnifying Glass) centering lean.": "Осмотри лот: характер продавца и (с лупой) смещение центра арта.",
+    "On Headbook and JaredsList you can make offers below the asking price.": "На Headbook и JaredsList можно торговаться ниже заявленной цены.",
+    "Watch for purple \"Storage Unit\" tiles on JaredsList - they crack into 15-35 random cards.": "Фиолетовые «Storage Unit» на JaredsList — 15–35 случайных карт из ячейки хранения.",
+    "Refresh has a 20s cooldown (10s with Deal Bot 9000).": "Обновление раз в 20 сек. (10 сек. с Deal Bot 9000).",
+
+    "Bundle mode: select 2+ raw cards to bundle them into a single sale (one fee, 90% of summed value).": "Режим лота: выбери 2+ сырых карты и продай одним лотом (одна комиссия, 90% от суммарной цены).",
+    "Everything you own. Sort by recent/value/profit/rarity/condition. Filter by status.": "Весь твой склад. Сортируй по дате, цене, профиту, редкости, состоянию. Фильтруй по статусу.",
+    "Click any card to open its detail view (stats, history, live market drift, watch toggle).": "Нажми на карту — характеристики, история, динамика рынка и отслеживание.",
+    "Watch the Market pill - it flashes when noise re-rolls.": "Следи за индикатором рынка — мигает при смене волатильности.",
+
+    "Dashboard": "Панель",
+    "Inventory": "Инвентарь",
+    "Online Listings": "Онлайн-лоты",
+
+    "A perfect-condition card grade (typically the \"10\"). Worth multiples of a 9 of the same card.": "Идеальная оценка (обычно «10»). Такая карта стоит кратно дороже девятки того же принта.",
+    "The direction the art is shifted - e.g. \"leans left\" means the art is closer to the left edge than the right. Helps you predict the grade.": "Куда смещён арт: «leans left» — ближе к левому краю, чем к правому. Помогает прикинуть будущий грейд.",
+    "Short for \"comparable sale\" - the recent average sold price for a card. Comps tell you what something is *actually* worth, not what someone is asking.": "От «comparable sale» — средняя цена недавних продаж. Компы показывают реальную цену, а не то, что просят в лоте.",
+
+    "A grab bag of pre-graded slabs from mixed grading companies. Quality varies wildly - a bucket of dice rolls.": "Набор слабов от разных компаний. Качество лотерея — как бросок кубика.",
+
+    "Magnifying Glass": "Увеличительная лупа",
+    "Deal Bot 9000": "Бот сделок 9000",
+    "Storage Unit": "Ячейка хранения",
+    "Headbook": "Headbook",
+    "JaredsList": "JaredsList"
+  },
+  "bare_literals": {
+    " Sell on ": " Продать на ",
+    " Sell slab on ": " Продать слаб на "
+  }
+}

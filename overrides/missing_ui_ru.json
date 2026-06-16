@@ -1,0 +1,72 @@
+{
+  "translations": {
+    "Free voucher from ZAG": "Бесплатный купон от ZAG",
+    "You don't have any raw cards yet - buy or flip one, then come back to redeem.": "Пока нет сырых карт — купи или перепродай хотя бы одну, потом вернись за купоном.",
+    "Redeem your free ZAG grading voucher on this card": "Использовать бесплатный купон ZAG на эту карту",
+
+    "Nothing in grading. Go to Inventory and submit a sharp card.": "Очередь пуста. Открой инвентарь и отправь сырую карту на оценку.",
+    "No grades received yet. Send your first card.": "Оценок пока нет. Отправь первую карту на грейдинг.",
+
+    "Inventory empty. Time to go shopping on FeeBay.": "Инвентарь пуст. Пора за покупками на FeeBay.",
+
+    "Reach Business Level 2": "Нужен ур. бизнеса 2",
+    "Reach Business Level 3": "Нужен ур. бизнеса 3",
+    "Reach Business Level 4": "Нужен ур. бизнеса 4",
+    "Reach Business Level 5": "Нужен ур. бизнеса 5",
+    "Reach Business Level 6": "Нужен ур. бизнеса 6",
+
+    "Active and historic macro events. Each pumps or dumps cards with matching tags.": "Активные и прошлые макро-события. Качают или роняют карты с подходящими тегами.",
+
+    "Locked": "Закрыто",
+    "No activity logged yet.": "Активности пока нет.",
+    "No listings here. Try refreshing or another marketplace.": "Лотов нет. Обнови ленту или зайди на другую площадку.",
+    "No data yet - keep flipping.": "Данных пока нет — продолжай флипать.",
+    "No employees yet. Hire an automation team to flip cards and watch the profit roll in.": "Сотрудников нет. Нанимай команду — пусть карты крутятся сами.",
+    "No payment": "Не оплачено",
+    "No sales yet. When something sells, it'll show up here.": "Продаж пока нет. Как только что-то уйдёт — появится здесь.",
+    "No walk-ins yet. Put cards on display and customers will start buying.": "Покупателей нет. Выложи карты на прилавок — пойдут продажи.",
+    "Not enough cash.": "Не хватает денег.",
+    "Not enough cash for buyout.": "Не хватает денег на выкуп.",
+    "Not enough cash for that card.": "Не хватает денег на эту карту.",
+    "Not enough cash for that listing.": "Не хватает денег на этот лот.",
+    "Not enough cash to cover the bid.": "Не хватает денег на ставку.",
+    "Not enough cash to grade.": "Не хватает денег на грейдинг.",
+    "Not enough cash to train that employee.": "Не хватает денег на обучение сотрудника.",
+
+    "Grading": "Грейдинг",
+    "Employees": "Сотрудники",
+    "Daily Deals": "Дневные сделки",
+    "BidGoblin": "BidGoblin",
+    "Storefront": "Витрина",
+    "Achievements": "Достижения",
+    "Upgrades": "Улучшения",
+    "Collection Codex": "Кодекс коллекции",
+    "Stats & Milestones": "Статистика и вехи",
+    "Online Listings": "Онлайн-лоты",
+
+    "Three graders. Different costs, speeds, premiums, and chaos levels. Pick your fighter.": "Три компании. Разные цены, скорости, премии и уровень хаоса. Выбирай бойца.",
+    "Fast and cheap. Slightly less hype on the resale.": "Быстро и дёшево. Чуть меньше ажиотажа на перепродаже.",
+    "Premium. Expensive. Slower. Highest market premium.": "Премиум. Дорого. Медленнее. Самая высокая рыночная премия.",
+    "Cheap chaos. Bucket Grading randomly bumps or dumps grades by a tier.": "Дешёвый хаос: Bucket Grading случайно поднимает или роняет грейд на ступень.",
+
+    "Cards you've posted online at chosen prices. Buyers nibble probabilistically each tick - this is the active-selling side of the business.": "Карты в онлайн-лотах по твоим ценам. Покупатели клюют с вероятностью каждый тик — активная сторона бизнеса.",
+    "Listings auto-expire after 8 game minutes and return to your inventory.": "Лоты сгорают через 8 игровых минут и возвращаются в инвентарь.",
+    "List near ref value for steady sales, above for jackpots, below for fast clears.": "По рынку — стабильные продажи, выше — джекпот, ниже — быстрый сброс.",
+    "Delist at any time to pull a card back.": "Сними лот в любой момент — карта вернётся.",
+
+    "Your HQ. Net worth chart, recent flips, market events, and quick-actions for every part of the game.": "Твой штаб: график капитала, недавние сделки, события рынка и быстрые действия.",
+    "Tip: watch the cash card - it pops a +$X / -$X chip whenever cash changes.": "Совет: следи за карточкой наличных — при изменении всплывает +$X / −$X.",
+
+    "Sell your first item.": "Продай первый предмет.",
+    "Buy your first listing.": "Купи первый лот.",
+    "Team full - promote your business for more slots": "Команда полна — повысь уровень бизнеса для новых слотов",
+    "Employees unlock at ": "Сотрудники с ур. ",
+    "Empty case": "Пусто",
+    "Got it": "Понятно",
+    "Start flipping": "Начать флипать",
+    "Browse Marketplace": "Открыть рынок",
+    "End of day": "Конец дня",
+    "Enjoying the game?": "Нравится игра?",
+    "Game crash - mod disabled": "Вылет игры — мод отключён"
+  }
+}
