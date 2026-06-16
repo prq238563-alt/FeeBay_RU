@@ -114,10 +114,6 @@ FeeBay_RU/
 
 ---
 
-Релиз: прикрепить `release/FeeBay_RU_Installer.exe` к GitHub Release с номером версии игры из `translations/strings_ru.json` → `meta.game_version`.
-
----
-
 ## Правовая информация
 
 FeeBay Simulator © Lake Country Games. Фан-проект, не связан с разработчиком.  
