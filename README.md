@@ -12,7 +12,7 @@
 ## Быстрый старт (игроки)
 
 1. Установите FeeBay через Steam, запустите один раз.
-2. Скачайте `FeeBay_RU_Installer.exe` из [Releases](https://github.com/YOUR_USER/FeeBay_RU/releases) *(или соберите сами)*.
+2. Скачайте `FeeBay_RU_Installer.exe` из [Releases](https://github.com/prq238563-alt/FeeBay_RU/releases) *(или соберите сами)*.
 3. Закройте игру → запустите установщик → укажите папку с `FeeBay.exe`.
 4. Перед обновлением Steam: **«Восстановить оригинал»** → обновление в Steam → снова установить патч.
 
@@ -121,7 +121,7 @@ git init
 git add .
 git commit -m "Initial release: Russian localization for FeeBay Simulator"
 git branch -M main
-git remote add origin https://github.com/YOUR_USER/FeeBay_RU.git
+git remote add origin https://github.com/prq238563-alt/FeeBay_RU.git
 git push -u origin main
 ```
 
@@ -146,4 +146,4 @@ Community Russian patch for **FeeBay Simulator**. Contains translation JSON, a s
 
 **Contributors:** edit `overrides/*.json`, run `merge_overrides.py`, then `install_patch.ps1`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Replace `YOUR_USER` in URLs with your GitHub username when publishing.
+Replace `YOUR_USER` in URLs with your GitHub username when forking.
