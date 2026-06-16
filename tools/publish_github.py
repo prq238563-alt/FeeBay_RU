@@ -11,7 +11,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-REPO_NAME = "FeeBay_RU"
+REPO_NAME = ""
 DESCRIPTION = "Unofficial Russian localization for FeeBay Simulator (tools + translations)"
 
 
