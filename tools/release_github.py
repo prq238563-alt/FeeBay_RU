@@ -11,8 +11,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OWNER = "prq238563-alt"
-REPO = "FeeBay_RU"
+OWNER = ""
+REPO = ""
 INSTALLER = ROOT / "release" / "FeeBay_RU_Installer.exe"
 
 
