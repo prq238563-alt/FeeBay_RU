@@ -89,7 +89,7 @@ def main() -> int:
                 "body": body,
                 "draft": False,
                 "prerelease": False,
-                "make_latest": True,
+                "make_latest": "true",
             },
         )
     except urllib.error.HTTPError as exc:
