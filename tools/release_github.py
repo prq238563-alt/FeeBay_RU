@@ -11,9 +11,36 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OWNER = ""
-REPO = ""
+REPO = "FeeBay_RU"
 INSTALLER = ROOT / "release" / "FeeBay_RU_Installer.exe"
+
+def owner_from_git_remote() -> str | None:
+    """Try to infer GitHub owner from `origin` remote URL."""
+    import subprocess
+
+    try:
+        out = subprocess.check_output(
+            ["git", "remote", "get-url", "origin"],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.DEVNULL,
+            shell=sys.platform == "win32",
+        ).strip()
+    except Exception:
+        return None
+
+    # Supports:
+    # - https://github.com/OWNER/REPO.git
+    # - git@github.com:OWNER/REPO.git
+    for prefix in ("https://github.com/", "git@github.com:"):
+        if out.startswith(prefix):
+            rest = out[len(prefix) :]
+            if rest.endswith(".git"):
+                rest = rest[:-4]
+            parts = rest.split("/")
+            if len(parts) >= 2:
+                return parts[0]
+    return None
 
 
 def api(method: str, url: str, token: str, payload: dict | None = None) -> dict:
@@ -78,10 +105,15 @@ def main() -> int:
         "Перед обновлением Steam используйте «Восстановить оригинал» в установщике."
     )
 
+    owner = os.environ.get("GITHUB_OWNER") or owner_from_git_remote()
+    if not owner:
+        print("Set GITHUB_OWNER or configure git remote 'origin' to GitHub.", file=sys.stderr)
+        return 1
+
     try:
         release = api(
             "POST",
-            f"https://api.github.com/repos/{OWNER}/{REPO}/releases",
+            f"https://api.github.com/repos/{owner}/{REPO}/releases",
             token,
             {
                 "tag_name": tag,
@@ -97,7 +129,7 @@ def main() -> int:
         if exc.code == 422 and "already exists" in err.lower():
             releases = api(
                 "GET",
-                f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{tag}",
+                f"https://api.github.com/repos/{owner}/{REPO}/releases/tags/{tag}",
                 token,
             )
             release = releases

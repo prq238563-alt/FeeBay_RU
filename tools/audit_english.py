@@ -11,8 +11,9 @@ from pathlib import Path
 
 from asar.asar import AsarArchive
 
+from bundle_paths import find_bundle_js
+
 ROOT = Path(__file__).resolve().parent.parent
-JS_REL = Path("dist/assets/index-Cv1WB-ch.js")
 
 STEAM_CANDIDATES = [
     Path(r"C:\Program Files (x86)\Steam\steamapps\common\FeeBay"),
@@ -111,7 +112,8 @@ def main() -> int:
         return 1
 
     with AsarArchive(original, "r") as archive:
-        js = archive.read(JS_REL).decode("utf-8")
+        js_rel = find_bundle_js(archive.list())
+        js = archive.read(js_rel).decode("utf-8")
 
     lines = audit(js)
     args.out.write_text("\n".join(lines), encoding="utf-8")

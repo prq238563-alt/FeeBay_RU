@@ -10,6 +10,8 @@ __pycache__/
 release/app.asar
 release/app.asar.unpacked/
 release/*.exe
+release/_*
+release/_asar_extract/
 
 # Installer settings (local path to game)
 feebay_ru_installer.json

@@ -58,6 +58,16 @@ SKIP_IF_CONTAINS = [
     "Golden Goblin",
 ]
 
+
+def is_false_positive(text: str) -> bool:
+    if re.fullmatch(r"text-[a-zA-Z0-9_-]+", text):
+        return True
+    if re.fullmatch(r"#[0-9a-fA-F]{3,8}", text):
+        return True
+    if len(text) <= 3 and text.isascii() and text.replace(" ", "").isalpha():
+        return True
+    return False
+
 PLACEHOLDER_RE = re.compile(r"(\$\{e\}|\{name\})")
 
 
@@ -80,6 +90,8 @@ def restore_placeholders(text: str, tokens: dict[str, str]) -> str:
 
 def should_skip(text: str, card_names: set[str]) -> bool:
     if text in SKIP_EXACT or text in card_names:
+        return True
+    if is_false_positive(text):
         return True
   # pure punctuation / numbers
     if len(text.strip()) <= 1:

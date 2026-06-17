@@ -121,6 +121,8 @@ def rebuild_patched_asar_from_bundle(
     """Runtime fallback: extract user's asar, patch JS, repack to temp file."""
     import asar  # lazy import for pyinstaller
 
+    from bundle_paths import find_bundle_js
+
     check = validate_game_dir(game_dir)
     if not check.ok:
         raise ValueError(check.message)
@@ -132,7 +134,9 @@ def rebuild_patched_asar_from_bundle(
 
     try:
         asar.extract_archive(asar_path, work)
-        js = work / "dist" / "assets" / "index-Cv1WB-ch.js"
+        assets = work / "dist" / "assets"
+        js_rel = find_bundle_js(assets_dir=assets)
+        js = work / js_rel
         html = work / "dist" / "index.html"
         if not js.is_file():
             raise FileNotFoundError("Неожиданная структура app.asar")

@@ -16,7 +16,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TOOLS = REPO_ROOT / "tools"
 APPLY_PATCH = TOOLS / "apply_patch.py"
 VERIFY_PATCH = TOOLS / "verify_patch.py"
-JS_REL = Path("dist/assets/index-Cv1WB-ch.js")
+from bundle_paths import find_bundle_js
+
 UNPACK_GLOB = "{**/*.node,**/*.dll,**/*.so,**/*.dylib}"
 
 STEAM_CANDIDATES = [
@@ -64,6 +65,10 @@ def dict_path(lang: str) -> Path:
 def ensure_original(resources: Path) -> Path:
     original = resources / "app.asar.original"
     current = resources / "app.asar"
+    if current.is_file() and _asar_is_vanilla_english(current):
+        shutil.copy2(current, original)
+        print(f"Refreshed English baseline: {original}")
+        return original
     if not original.is_file():
         if current.is_file():
             shutil.copy2(current, original)
@@ -71,6 +76,83 @@ def ensure_original(resources: Path) -> Path:
         else:
             raise FileNotFoundError(f"Missing {original} and {current}")
     return original
+
+
+def _asar_is_vanilla_english(asar_path: Path) -> bool:
+    """True if bundle still looks like unpatched English (e.g. after Steam update)."""
+    try:
+        from asar.asar import AsarArchive
+
+        with AsarArchive(asar_path, "r") as archive:
+            js = archive.read(find_bundle_js(archive.list())).decode("utf-8", errors="replace")
+        return "Настройки" not in js and "Settings" in js
+    except Exception:
+        return False
+
+
+def _apply_translations(js_path: Path, dictionary: Path, lang: str) -> None:
+    if getattr(sys, "frozen", False):
+        from apply_patch import apply_dictionary
+
+        payload = json.loads(dictionary.read_text(encoding="utf-8"))
+        js = js_path.read_text(encoding="utf-8")
+        patched, missing = apply_dictionary(
+            js,
+            payload.get("translations", payload),
+            bare_literals=payload.get("bare_literals"),
+            business_names=payload.get("business_names"),
+            business_taglines=payload.get("business_taglines"),
+            strict=False,
+        )
+        js_path.write_text(patched, encoding="utf-8")
+        print(f"Patched: {js_path}")
+        print(f"Entries: {len(payload.get('translations', payload))}")
+        if missing:
+            print(f"Missing ({len(missing)}):")
+            for item in missing[:30]:
+                print(f"  - {item}")
+            if len(missing) > 30:
+                print(f"  … and {len(missing) - 30} more")
+        return
+
+    run(
+        [
+            sys.executable,
+            str(APPLY_PATCH),
+            "--dict",
+            str(dictionary),
+            "--js",
+            str(js_path),
+            "--lang",
+            lang,
+        ]
+    )
+
+
+def _verify_bundle(js_path: Path, lang: str) -> None:
+    if getattr(sys, "frozen", False):
+        from verify_patch import BROKEN_MARKERS, LANG_MARKERS, MUST_KEEP
+
+        js = js_path.read_text(encoding="utf-8")
+        errors: list[str] = []
+        for token in MUST_KEEP:
+            if token not in js:
+                errors.append(f"missing required token: {token}")
+        for token in LANG_MARKERS.get(lang, []):
+            if token not in js:
+                errors.append(f"missing translation marker ({lang}): {token}")
+        for token in BROKEN_MARKERS:
+            if token in js:
+                errors.append(f"found corruption: {token}")
+        if errors:
+            print("VERIFY FAILED")
+            for err in errors:
+                print(f"  - {err}")
+            raise RuntimeError("verify_patch failed")
+        print("VERIFY OK")
+        return
+
+    run([sys.executable, str(VERIFY_PATCH), "--js", str(js_path), "--lang", lang])
 
 
 def patch_asar(
@@ -97,43 +179,34 @@ def patch_asar(
         if result.returncode != 0:
             print("Note: extract reported missing unpacked files (steamworks); continuing if JS is present.")
 
-        js_path = staging / JS_REL
+        js_rel = find_bundle_js(assets_dir=staging / "dist" / "assets")
+        js_path = staging / js_rel
         if not js_path.is_file():
             print("Fallback: extract-file for game bundle JS...")
             js_path.parent.mkdir(parents=True, exist_ok=True)
             npx_asar(
                 "extract-file",
                 str(source_asar),
-                str(JS_REL).replace("\\", "/"),
+                str(js_rel).replace("\\", "/"),
                 str(js_path),
                 cwd=work,
             )
             if not js_path.is_file():
                 raise FileNotFoundError(
-                    f"Could not extract {JS_REL}. "
+                    f"Could not extract {js_rel}. "
                     "Verify game files in Steam (Integrity check) and retry."
                 )
+        print(f"Bundle: {js_rel}")
 
         html_path = staging / "dist" / "index.html"
         print(f"Applying translations ({dictionary.name})...")
-        run(
-            [
-                sys.executable,
-                str(APPLY_PATCH),
-                "--dict",
-                str(dictionary),
-                "--js",
-                str(js_path),
-                "--lang",
-                lang,
-            ]
-        )
+        _apply_translations(js_path, dictionary, lang)
         if html_path.is_file():
             html = html_path.read_text(encoding="utf-8")
             html = html.replace('<html lang="en">', f'<html lang="{lang}">')
             html_path.write_text(html, encoding="utf-8")
 
-        run([sys.executable, str(VERIFY_PATCH), "--js", str(js_path), "--lang", lang])
+        _verify_bundle(js_path, lang)
 
         packed = work / "packed.asar"
         print("Packing app.asar (Steam-compatible size)...")

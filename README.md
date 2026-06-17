@@ -12,7 +12,7 @@
 ## Быстрый старт (игроки)
 
 1. Установите FeeBay через Steam, запустите один раз.
-2. Скачайте `FeeBay_RU_Installer.exe` из [Releases](https://github.com/prq238563-alt/FeeBay_RU/releases) *(или соберите сами)*.
+2. Скачайте `FeeBay_RU_Installer.exe` из **Releases** этого репозитория *(или соберите сами)*.
 3. Закройте игру → запустите установщик → укажите папку с `FeeBay.exe`.
 4. Перед обновлением Steam: **«Восстановить оригинал»** → обновление в Steam → снова установить патч.
 
@@ -37,12 +37,22 @@ powershell -File tools\install_patch.ps1 -GameDir $game
 
 При первом запуске создаётся резервная копия `resources\app.asar.original`.
 
-### Сборка установщика
+### Сборка установщика для игроков
 
 ```powershell
 powershell -File tools\build_installer.ps1 -GameDir $game
 # → release\FeeBay_RU_Installer.exe
 ```
+
+### Набор обновления (для следующих версий игры)
+
+```powershell
+powershell -File tools\build_update_toolkit.ps1
+# → release\FeeBay_RU_Update_Toolkit.exe
+```
+
+GUI-инструмент: извлечь EN → перевести новое → merge overrides → патч в игру → (опционально) собрать установщик для игроков.  
+Рядом с `.exe` можно создать портативную папку `FeeBay_RU_toolkit` или указать клон репозитория.
 
 Артефакты в `release/` в git не попадают — их прикрепляют к GitHub Release вручную.
 
@@ -52,7 +62,7 @@ powershell -File tools\build_installer.ps1 -GameDir $game
 
 ```
 FeeBay_RU/
-  translations/       # Словари strings_<lang>.json (~780 строк для ru)
+  translations/       # Словари strings_<lang>.json (~890 строк для ru)
   overrides/          # Ручные правки (мержатся в словарь)
   reference/          # Английские строки и имена карт (не патчить)
   tools/              # Патчер, установщик, проверки
@@ -131,4 +141,4 @@ Community Russian patch for **FeeBay Simulator**. Contains translation JSON, a s
 
 **Contributors:** edit `overrides/*.json`, run `merge_overrides.py`, then `install_patch.ps1`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Replace `YOUR_USER` in URLs with your GitHub username when forking.
+When forking, update GitHub URLs in this README (if you add any) to match your repo.

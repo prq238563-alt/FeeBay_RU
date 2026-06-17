@@ -14,6 +14,9 @@
     "See conventions 60s before they go public. +5% boost while attending.": "Видишь конвенты на 60 сек. раньше остальных. +5% к бонусу на площадке.",
     "Hire: Vault Keeper": "Наём: хранитель сейфа",
     "Vault-held cards become immune to market noise. Hold the chase pieces stable.": "Карты в сейфе не реагируют на рыночный шум. Chase-карты лежат спокойно.",
+    "All inventory cards become immune to market noise - both raw and graded. Values lock to their true baseline.": "Весь инвентарь защищён от рыночного шума — сырые и в слабах. Цены фиксируются на базовой стоимости.",
+    "Reset all progress and start over? This cannot be undone.": "Сбросить весь прогресс? Это необратимо.",
+    "reference value": "ориентир цены",
 
     "Marketplace": "Рынок",
     "Browse parody platforms. Each refresh seeds 12 listings, some great, most fair, a few traps.": "Пародийные площадки. Каждое обновление — 12 лотов: жемчужины, нормальные цены и ловушки.",

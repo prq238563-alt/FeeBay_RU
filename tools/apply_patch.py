@@ -132,6 +132,10 @@ SPECIAL_REPLACEMENTS: list[tuple[str, str]] = [
         'children:[n.jsx(S,{name:"package",size:12})," Режим лота"]',
     ),
     (
+        r'children:"reference value"\}\)," gives roughly a 15% sale chance per minute\. List under value for fast flips, over value for jackpot prices but more risk of expiring\. Listings expire after 8 minutes and return to your inventory\. Buyers don\'t always pay instantly - 60% pay on the spot, 30% delay, 10% will cancel and you get your card back \(but lose the time\)\."\]',
+        'children:"ориентир цены"})," — ~15% шанс продажи в минуту. Ниже рынка — быстрый флип, выше — джекпот, но риск сгорания. Лоты сгорают через 8 минут и возвращаются в инвентарь. Покупатели платят не сразу: 60% сразу, 30% с задержкой, 10% отменят — карта вернётся (но время потеряно)."]',
+    ),
+    (
         r'children:y==="all"\?"All listings":y',
         'children:y==="all"?"Все лоты":y',
     ),

@@ -2,7 +2,7 @@
   "meta": {
     "phase": "P0",
     "description": "Navigation, header HUD, Settings — first playable patch",
-    "game_version": "0.1.24"
+    "game_version": "0.1.25"
   },
   "translations": {
     "Dashboard": "Панель",
