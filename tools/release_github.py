@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "FeeBay_RU"
 INSTALLER = ROOT / "release" / "FeeBay_RU_Installer.exe"
+TOOLKIT = ROOT / "release" / "FeeBay_RU_Update_Toolkit.exe"
 
 def owner_from_git_remote() -> str | None:
     """Try to infer GitHub owner from `origin` remote URL."""
@@ -96,6 +97,9 @@ def main() -> int:
     if not INSTALLER.is_file():
         print(f"Missing installer: {INSTALLER}", file=sys.stderr)
         return 1
+    assets: list[Path] = [INSTALLER]
+    if TOOLKIT.is_file():
+        assets.append(TOOLKIT)
 
     ver = game_version()
     tag = f"v{ver}"
@@ -139,9 +143,10 @@ def main() -> int:
             return 1
 
     print(f"Release: {release['html_url']}")
-    asset = upload_asset(release["upload_url"], token, INSTALLER)
-    print(f"Asset: {asset['browser_download_url']}")
-    print(f"Size: {INSTALLER.stat().st_size} bytes")
+    for path in assets:
+        asset = upload_asset(release["upload_url"], token, path)
+        print(f"Asset: {asset['browser_download_url']}")
+        print(f"Size: {path.stat().st_size} bytes")
     return 0
 
 
