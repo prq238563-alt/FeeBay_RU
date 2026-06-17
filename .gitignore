@@ -1,3 +1,7 @@
+# Local-only GitHub publish helpers (not in public repo)
+tools/publish_github.py
+tools/release_github.py
+
 # Build artifacts
 tools/build/
 tools/dist/
