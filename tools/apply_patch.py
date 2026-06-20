@@ -9,8 +9,29 @@ import re
 import sys
 from pathlib import Path
 
+from patch_adapters import apply_dynamic_patches
+
+# Fragments handled by SPECIAL_REPLACEMENTS / patch_adapters — not dictionary gaps.
+_MISSING_NOISE = (
+    " gives roughly",
+    "Listings expire after 8 minutes",
+    "reference value",
+    "Listing at your ",
+    "Reach Business Level 4",
+    "Reach Business Level 5",
+    "Reach Business Level 6",
+    "Noticeably off-center",
+    "Heavily off-center",
+    "Slight off-center",
+    "Dead-center",
+    "Off-center",
+    "Nothing to withdraw",
+    "Market drift (live)",
+)
+
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_DICT = ROOT / "translations" / "strings_ru.json"
+
 
 def dict_for_lang(lang: str) -> Path:
     return ROOT / "translations" / f"strings_{lang}.json"
@@ -334,8 +355,21 @@ def replace_whitelisted_keyed(js: str, key: str, mapping: dict[str, str]) -> tup
     return js, total
 
 
+def _filter_reportable_missing(missing: list[str]) -> list[str]:
+    out: list[str] = []
+    for item in missing:
+        if item in PROTECTED_FROM_BARE:
+            continue
+        if any(noise in item for noise in _MISSING_NOISE):
+            continue
+        out.append(item)
+    return out
+
+
 def apply_special_replacements(js: str) -> tuple[str, int]:
     total = 0
+    js, dynamic = apply_dynamic_patches(js)
+    total += len(dynamic)
     for old, new in EXACT_REPLACEMENTS:
         count = js.count(old)
         if count:
@@ -407,7 +441,7 @@ def apply_dictionary(
             if strict:
                 raise KeyError(f"String not found in UI contexts: {en!r}")
 
-    return js, missing
+    return js, _filter_reportable_missing(missing)
 
 
 def main() -> int:

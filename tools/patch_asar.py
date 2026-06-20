@@ -130,29 +130,22 @@ def _apply_translations(js_path: Path, dictionary: Path, lang: str) -> None:
 
 
 def _verify_bundle(js_path: Path, lang: str) -> None:
-    if getattr(sys, "frozen", False):
-        from verify_patch import BROKEN_MARKERS, LANG_MARKERS, MUST_KEEP
+    from verify_patch import BROKEN_MARKERS, LANG_MARKERS
+    from bundle_markers import verify_bundle
 
-        js = js_path.read_text(encoding="utf-8")
-        errors: list[str] = []
-        for token in MUST_KEEP:
-            if token not in js:
-                errors.append(f"missing required token: {token}")
-        for token in LANG_MARKERS.get(lang, []):
-            if token not in js:
-                errors.append(f"missing translation marker ({lang}): {token}")
-        for token in BROKEN_MARKERS:
-            if token in js:
-                errors.append(f"found corruption: {token}")
-        if errors:
-            print("VERIFY FAILED")
-            for err in errors:
-                print(f"  - {err}")
-            raise RuntimeError("verify_patch failed")
-        print("VERIFY OK")
-        return
-
-    run([sys.executable, str(VERIFY_PATCH), "--js", str(js_path), "--lang", lang])
+    js = js_path.read_text(encoding="utf-8")
+    errors = verify_bundle(
+        js,
+        lang=lang,
+        lang_markers=LANG_MARKERS,
+        broken_markers=BROKEN_MARKERS,
+    )
+    if errors:
+        print("VERIFY FAILED")
+        for err in errors:
+            print(f"  - {err}")
+        raise RuntimeError("verify_patch failed")
+    print("VERIFY OK")
 
 
 def patch_asar(

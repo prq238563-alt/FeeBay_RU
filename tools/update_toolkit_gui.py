@@ -12,6 +12,7 @@ from tkinter import filedialog, messagebox, ttk
 from paths_toolkit import default_workspace, discover_repo_root, ensure_workspace, is_repo_root
 from patch_core import validate_game_dir
 from update_toolkit_core import (
+    detect_game_version,
     run_full_update,
     step_build_player_installer,
     step_extract,
@@ -168,7 +169,8 @@ class ToolkitApp(tk.Tk):
 
         ttk.Label(
             frame,
-            text="Нужны: Node.js (npx), интернет для автоперевода. Закройте FeeBay перед патчем.",
+            text="Нужны: Node.js (npx), интернет для автоперевода. Закройте FeeBay перед патчем. "
+            "Версия игры и маркеры verify подбираются автоматически.",
             foreground="#555",
             wraplength=600,
         ).pack(anchor=tk.W, padx=10)
@@ -180,10 +182,22 @@ class ToolkitApp(tk.Tk):
         self.log.configure(state=tk.DISABLED)
         self.update_idletasks()
 
+    def _refresh_version_from_game(self) -> None:
+        game_raw = self.game_var.get().strip().strip('"')
+        if not game_raw:
+            return
+        check = validate_game_dir(Path(game_raw))
+        if not check.ok:
+            return
+        version = detect_game_version(Path(game_raw))
+        if version:
+            self.version_var.set(version)
+
     def _browse_game(self) -> None:
         path = filedialog.askdirectory(initialdir=self.game_var.get() or str(Path.home()))
         if path:
             self.game_var.set(path)
+            self._refresh_version_from_game()
 
     def _browse_repo(self) -> None:
         path = filedialog.askdirectory(initialdir=self.repo_var.get() or str(Path.home()))
@@ -217,6 +231,7 @@ class ToolkitApp(tk.Tk):
             messagebox.showerror(APP_NAME, str(exc))
             return None
         save_settings(str(game_dir), str(repo_dir), self.version_var.get().strip())
+        self._refresh_version_from_game()
         return game_dir, repo_dir
 
     def _run_async(self, title: str, fn) -> None:

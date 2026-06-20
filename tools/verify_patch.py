@@ -7,6 +7,8 @@ import argparse
 import sys
 from pathlib import Path
 
+from bundle_markers import verify_bundle as _verify_bundle
+
 LANG_MARKERS: dict[str, list[str]] = {
     "ru": [
         "Настройки",
@@ -17,16 +19,17 @@ LANG_MARKERS: dict[str, list[str]] = {
     ],
 }
 
+# Legacy exports — frozen exe and tests may import these names.
 MUST_KEEP = [
     "unlockReputation",
     "revealGradingSubmission",
     "cancelGradingSubmission",
     "netWorth",
     "shopValue",
-    "togglePause(){const a=t(),s=Date.now();if(a.paused)",
     'name:"ZAG Grading"',
     'name:"Bucket Grading"',
     'function Pf(e){const t={Damaged:[8,24]',
+    'togglePause(){const a=t(),s=Date.now();if(a.paused)',
     '["all","raw","grading","graded","showcased"]',
     '"Near Mint":[76,90],Minty:[85,95]',
 ]
@@ -35,6 +38,7 @@ BROKEN_MARKERS = [
     "unlockРепутация",
     "revealГрейдинг",
     "u.на паузе",
+    "a.на паузе",
     "ZAG Грейдинг",
     '"Почти идеал":[76,90]',
     '["Все","Без грейда"',
@@ -49,19 +53,12 @@ def main() -> int:
     args = parser.parse_args()
 
     js = args.js.read_text(encoding="utf-8")
-    errors: list[str] = []
-
-    for token in MUST_KEEP:
-        if token not in js:
-            errors.append(f"missing required token: {token}")
-
-    for token in LANG_MARKERS.get(args.lang, []):
-        if token not in js:
-            errors.append(f"missing translation marker ({args.lang}): {token}")
-
-    for token in BROKEN_MARKERS:
-        if token in js:
-            errors.append(f"found corruption: {token}")
+    errors = _verify_bundle(
+        js,
+        lang=args.lang,
+        lang_markers=LANG_MARKERS,
+        broken_markers=BROKEN_MARKERS,
+    )
 
     if errors:
         print("VERIFY FAILED")

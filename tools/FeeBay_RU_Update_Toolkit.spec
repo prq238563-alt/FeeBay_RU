@@ -26,6 +26,9 @@ hiddenimports = [
     "merge_overrides",
     "update_toolkit_core",
     "paths_toolkit",
+    "bundle_markers",
+    "patch_adapters",
+    "dictionary_migrate",
 ]
 
 a = Analysis(

@@ -12,6 +12,8 @@ from collections.abc import Callable
 from pathlib import Path
 
 from build_strings_ru import collect_english_strings, should_skip, translate_text
+from bundle_markers import discover_missing_markers, read_bundle_js_from_asar, read_game_version
+from dictionary_migrate import migrate_translations
 from extract_strings_en import build_payload, read_js_from_asar
 from patch_asar import patch_asar
 from patch_core import validate_game_dir, _stop_feebay_processes
@@ -55,6 +57,56 @@ def _resolve_asar(game_dir: Path) -> Path:
     raise FileNotFoundError("В папке игры нет app.asar / app.asar.original")
 
 
+def detect_game_version(game_dir: Path) -> str | None:
+    asar = _resolve_asar(game_dir)
+    return read_game_version(asar)
+
+
+def _migrate_dictionary_from_reference(repo_root: Path, log: LogFn, lang: str = "ru") -> None:
+    en_path = repo_root / "reference" / "strings_en.json"
+    dict_path = repo_root / "translations" / f"strings_{lang}.json"
+    if not en_path.is_file() or not dict_path.is_file():
+        return
+
+    en = json.loads(en_path.read_text(encoding="utf-8"))
+    payload = json.loads(dict_path.read_text(encoding="utf-8"))
+    english = set(collect_english_strings(en))
+    migrated, moves = migrate_translations(payload.get("translations", {}), english)
+    if not moves:
+        return
+
+    payload["translations"] = dict(sorted(migrated.items(), key=lambda x: x[0].lower()))
+    payload.setdefault("meta", {})
+    payload["meta"]["total_entries"] = len(payload["translations"])
+    dict_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    log(f"Миграция ключей словаря: {len(moves)} (игра изменила формулировки)")
+    for old, new in moves[:5]:
+        log(f"  · {old[:50]}… → {new[:50]}…")
+    if len(moves) > 5:
+        log(f"  … ещё {len(moves) - 5}")
+
+
+def _preflight_bundle(game_dir: Path, log: LogFn) -> None:
+    asar = _resolve_asar(game_dir)
+    try:
+        js, bundle = read_bundle_js_from_asar(asar)
+    except Exception as exc:
+        log(f"Предупреждение: не удалось прочитать бандл ({exc})")
+        return
+
+    version = read_game_version(asar)
+    if version:
+        log(f"Бандл {bundle.name}, версия игры {version}")
+
+    unknown = discover_missing_markers(js)
+    if unknown:
+        log("Предупреждение: необычная структура JS — возможны ручные правки:")
+        for item in unknown[:6]:
+            log(f"  - {item}")
+        if len(unknown) > 6:
+            log(f"  … ещё {len(unknown) - 6}")
+
+
 def step_extract(game_dir: Path, repo_root: Path, log: LogFn) -> None:
     asar = _resolve_asar(game_dir)
     log(f"Извлечение строк из {asar.name}…")
@@ -71,6 +123,10 @@ def step_extract(game_dir: Path, repo_root: Path, log: LogFn) -> None:
     )
     log(f"Готово: {out.name} ({payload['meta']['unique_count']} строк, бандл {js_rel})")
 
+    version = read_game_version(asar)
+    if version:
+        log(f"Версия игры из package.json: {version}")
+
 
 def step_update_ru(repo_root: Path, game_version: str, log: LogFn) -> None:
     en_path = repo_root / "reference" / "strings_en.json"
@@ -86,6 +142,9 @@ def step_update_ru(repo_root: Path, game_version: str, log: LogFn) -> None:
 
     english = collect_english_strings(en)
     translations: dict[str, str] = dict(ru.get("translations", {}))
+    translations, moves = migrate_translations(translations, english)
+    if moves:
+        log(f"Автомиграция: {len(moves)} ключей словаря под новый EN")
     skipped = list(ru.get("skipped", []))
     missing = [s for s in english if s not in translations and not should_skip(s, card_names)]
 
@@ -165,6 +224,13 @@ def step_patch(
     if not dictionary.is_file():
         raise FileNotFoundError(dictionary)
 
+    detected = detect_game_version(game_dir)
+    if detected:
+        log(f"Версия игры (package.json): {detected}")
+
+    _preflight_bundle(game_dir, log)
+    _migrate_dictionary_from_reference(repo_root, log, lang=lang)
+
     resources = game_dir / "resources"
     original = resources / "app.asar.original"
     current = resources / "app.asar"
@@ -195,6 +261,13 @@ def step_patch(
 
     log("Сборка патча (нужны Node.js и npx)…")
     _stop_feebay_processes()
+
+    # Refresh dictionary meta to detected game version.
+    if detected:
+        payload = json.loads(dictionary.read_text(encoding="utf-8"))
+        payload.setdefault("meta", {})["game_version"] = detected
+        dictionary.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
     with _capture_stdout(log):
         patch_asar(
             original=original,
@@ -255,6 +328,14 @@ def run_full_update(
     *,
     build_installer: bool = False,
 ) -> None:
+    detected = detect_game_version(game_dir)
+    if detected:
+        if game_version and game_version != detected:
+            log(f"Версия игры: {detected} (в GUI было {game_version})")
+        game_version = detected
+    elif not game_version:
+        game_version = "0.0.0"
+
     step_extract(game_dir, repo_root, log)
     step_update_ru(repo_root, game_version, log)
     step_merge(repo_root, log)
