@@ -1,6 +1,6 @@
 {
   "meta": {
-    "game_version": "0.1.26",
+    "game_version": "0.1.29",
     "total_entries": 891,
     "skipped": 69,
     "manual_p0": 77,
@@ -702,7 +702,7 @@
     "Rarity": "Редкость",
     "Raw": "Без грейда",
     "Reach $1,000,000 net worth.": "Достигните собственного капитала в 1 000 000 долларов.",
-    "Reach $1,500 net worth + ${Y(500)} cash to promote to Side Hustle - unlocks Employees, your Storefront, and a bigger marketplace feed.": "Набери $1 500 капитала + ${Y(500)} наличными для уровня «Подработка» — откроются сотрудники, витрина и более широкая лента рынка.",
+    "Reach $1,500 net worth + ${V(500)} cash to promote to Side Hustle - unlocks Employees, your Storefront, and a bigger marketplace feed.": "Набери $1 500 капитала + ${V(500)} наличными для уровня «Подработка» — откроются сотрудники, витрина и более широкая лента рынка.",
     "Reach $100,000 net worth.": "Достигните собственного капитала в 100 000 долларов.",
     "Reach $25,000 net worth.": "Достигните собственного капитала в 25 000 долларов.",
     "Reach $5,000 in cash.": "Получите 5000 долларов наличными.",
@@ -726,7 +726,7 @@
     "Recent flips": "Недавние перевороты",
     "Recent sales": "Недавние продажи",
     "Recently graded": "Недавно выставлена ​​оценка",
-    "Redeem your free ZAG grading voucher on this card": "Использовать бесплатный купон ZAG на эту карту",
+    "Redeem your free ZAG grading voucher - one-time use, covers the full submission fee.": "Использовать бесплатный купон ZAG — одноразово, покрывает полную стоимость отправки.",
     "Reduces selling fees by 25%.": "Снижает комиссию с продаж на 25%.",
     "reference value": "ориентир цены",
     "Refresh has a 20s cooldown (10s with Deal Bot 9000).": "Обновление раз в 20 сек. (10 сек. с Deal Bot 9000).",

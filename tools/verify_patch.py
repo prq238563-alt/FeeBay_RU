@@ -23,10 +23,10 @@ MUST_KEEP = [
     "cancelGradingSubmission",
     "netWorth",
     "shopValue",
-    "u.paused",
+    "togglePause(){const a=t(),s=Date.now();if(a.paused)",
     'name:"ZAG Grading"',
     'name:"Bucket Grading"',
-    'function uf(e){const t={Damaged:[8,24]',
+    'function Pf(e){const t={Damaged:[8,24]',
     '["all","raw","grading","graded","showcased"]',
     '"Near Mint":[76,90],Minty:[85,95]',
 ]
